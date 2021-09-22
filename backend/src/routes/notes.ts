@@ -28,12 +28,5 @@ NotesRoute.post('/', async (req, res) => {
   }
 })
 
-NotesRoute.patch('/', async (req, res) => {
-  try {
-  } catch (error) {
-    res.json({ error })
-    throw error
-  }
-})
 
 export default NotesRoute
