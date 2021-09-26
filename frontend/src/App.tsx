@@ -1,41 +1,43 @@
-import React, { useState } from 'react';
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
-import TestComponent from './component/TestComponent';
-import { StyledBaru } from './TestStyle';
+import SideNav from './component/SideBar';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import styled from 'styled-components';
+import { TNavList } from './component/SideBar/types';
+import Notes from './component/Notes';
+import GlobalStyle from './Global/globalStyle.style';
+
+const StyledApp = styled.div`
+  display: flex;
+  margin:0;
+  padding:0;
+  width: 100vw;
+  height:100vh;
+  background-color: grey;
+  overflow-y: auto;
+`
 
 function App() {
 
-  const [shouldChangeColor, setShouldChangeColor] = useState<boolean>(false)
+  const [listNotes, setListNotes] = useState<[TNavList]>()
 
+  useEffect(()=>{
+    fetch('http://localhost:4000/notes')
+      .then(response => response.json())
+      .then(data => setListNotes(data))
+  },[])
+
+  console.log(listNotes)
   return (
-    <div className="App">
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-
-      <TestComponent dataSource="string" counter="string juga" />
-    
-
-      <TestComponent dataSource="string" counter="string juga" isComplete={true}/> */}
-      <button style={{marginTop: '20px'}} onClick={() => setShouldChangeColor(!shouldChangeColor)}>Toggle color</button>
-      <StyledBaru 
-        shouldChangeColor={shouldChangeColor}
-      > 
-        Ini dari styled component
-      </StyledBaru>
-    </div>
+    <StyledApp>
+      <GlobalStyle/>
+      <Router>
+        <SideNav list={listNotes}/>
+        <Switch>
+          <Route path="/notes" component={Notes} />
+        </Switch>
+      </Router>
+    </StyledApp>
   );
 }
 
