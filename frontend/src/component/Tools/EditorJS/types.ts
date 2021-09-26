@@ -1,10 +1,10 @@
 
 export type TypeTools = {
-    tools : TypeTableTools
+    tools : {
+        image: any
+    }
 }
 
 export type TypeTableTools = {
-    table : {
-        class: string
-    }
+    image : string
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import EditorJS from '@editorjs/editorjs'
 import { TypeTools } from './types'
 
-const EditorJSPlugin : React.FC<TypeTools> = () => {
+const EditorJSPlugin : React.FC<TypeTools> = (tools) => {
     const EDITOR_ID : string = "EDITOR_JS_PLUGIN"
 
     //reference that hold the Editor
@@ -24,7 +24,8 @@ const EditorJSPlugin : React.FC<TypeTools> = () => {
         const editorjs : EditorJS = new EditorJS({
             holder: EDITOR_ID,
             autofocus: true,
-            inlineToolbar: true
+            inlineToolbar: true,
+            ...tools
         })
 
         editorjs.isReady
