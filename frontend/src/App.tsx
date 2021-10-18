@@ -13,7 +13,7 @@ const StyledApp = styled.div`
   padding:0;
   width: 100vw;
   height:100vh;
-  background-color: grey;
+  background-color: #F3F5F7;
   overflow-y: auto;
 `
 

@@ -1,48 +1,72 @@
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom"
 import ImageLayout from "./ImageLayout"
 
 
 class ImageLoad {
-    // constructor({ data, config, api, readOnly }) {
-    // this.api = api;
-    // this.readOnly = readOnly;
-    // this.data = {
-    //     events: data.events || [],
-    // };
-    
-    // this.CSS = {
-    //     wrapper: 'walkthrough-timeline',
-    // };
-    
-    // this.nodes = {
-    //     holder: null,
-    // };
-    // }
-
-    static get toolbox() {
-        return {
-            title: 'Image',
-            icon: '<svg width="17" height="15" viewBox="0 0 336 276" xmlns="http://www.w3.org/2000/svg"><path d="M291 150V79c0-19-15-34-34-34H79c-19 0-34 15-34 34v42l67-44 81 72 56-29 42 30zm0 52l-43-30-56 30-81-67-66 39v23c0 19 15 34 34 34h178c17 0 31-13 34-29zM79 0h178c44 0 79 35 79 79v118c0 44-35 79-79 79H79c-44 0-79-35-79-79V79C0 35 35 0 79 0z"/></svg>'
-        };
+    data: any
+    api: any
+    constructor({data,api}: {data: any, api:any}){
+        this.api = {...api}
+        this.data = {...data}
     }
 
-    render(){
-        const rootNode = document.createElement('div');
+    rootNode: any
+    checkLoadStats: Boolean = false
 
-        ReactDOM.render(
-            (
-                <ImageLayout />
-            ),
-            rootNode
-        )
-
-        return rootNode
+    render(url ?: any) : HTMLDivElement{
+        console.log("ini dari tampilan image")
+        console.log(this.data)
+        this.rootNode = document.createElement('div')
+        let imageurl = url ? url : ""
+        if(!(Object.keys(this.data).length === 0)) {
+            let files = this.data.url
+            if(typeof this.data.url.name == 'string'){
+                files = URL.createObjectURL(this.data.url)
+            }
+            this.renderImage(files)
+            // console.log(this.data)
+        }
+        return this.rootNode
     }
 
     save(blockContent : any){
         return {
             url : blockContent.value
         }
+    }
+
+    static get pasteConfig(){
+        return {
+            files: {
+                mimeTypes: ['image/*'],
+                extensions: ['gif', 'jpg', 'png', 'jpeg']
+            }
+        }
+    }
+
+    onPaste(event : any){
+        console.log("ada yg paste nih")
+        this.checkLoadStats = true
+        switch (event.type){
+            case 'file':
+                const file : File = event.detail.file;
+                const reader = new FileReader();
+
+                reader.onload = (loadEvent) => {
+                    this.renderImage(loadEvent.target?.result)
+                    // console.log(loadEvent.target?.result)
+                }
+
+                reader.readAsDataURL(file)
+                break
+        }
+    }
+    renderImage(imageurl : any){
+        ReactDOM.render(
+            (
+                <ImageLayout imageurl= {imageurl} />
+            ), this.rootNode
+        )
     }
 }
 

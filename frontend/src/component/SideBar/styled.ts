@@ -16,8 +16,9 @@ export const StyledSideNav = Styled.div<TConditional>`
     height: 100%;
     left:0;
     top:0;
-    background-color: #ff99ff;
+    background-color: #FFFFFC;
     padding-top: 1.5em;
+    border: 2px solid #E7EBEF;
     a{
         display:block;
         text-decoration:none;
